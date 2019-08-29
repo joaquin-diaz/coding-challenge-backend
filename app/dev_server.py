@@ -1,4 +1,5 @@
 import json
+from urllib.parse import urlparse, parse_qs
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
@@ -17,7 +18,19 @@ class Handler(BaseHTTPRequestHandler):
 
   def do_GET(self):
     self._set_headers()
-    response = handler(None, None)
+
+    parsed_url = urlparse(self.path)
+    # Output: {"name": ['value1', 'value2']}
+    parsed_qs = parse_qs(parsed_url.query)
+    # Mock lambda event
+    mock_event = {
+      "queryStringParameters": {
+        "query": parsed_qs.get('query', ''),
+        "limit": parsed_qs.get('limit', ''),
+      }
+    }
+
+    response = handler(mock_event, None)
     self.wfile.write(str.encode(response))
 
 httpd = HTTPServer(('', PORT), Handler)
