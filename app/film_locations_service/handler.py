@@ -1,8 +1,7 @@
 import json
+from .api import FilmLocationsAPI
 
 def handler(event, context):
-  response = {
-      "hello": "world"
-  }
+  api = FilmLocationsAPI()
 
-  return json.dumps(response)
+  return json.dumps(api.fetch_film_locations())
