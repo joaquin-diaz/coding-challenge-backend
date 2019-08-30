@@ -6,7 +6,7 @@ class FilmLocationsAPI(object):
 
   def __init__(self, api_token):
     if not api_token:
-      raise Exception("Please provide a valid api token")
+      raise Exception("Please provide a valid API token to fetch film locations")
 
     self.api_token = api_token
 

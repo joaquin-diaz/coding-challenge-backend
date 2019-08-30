@@ -7,6 +7,7 @@
 ## Config
 
   export SF_LOCATIONS_API_KEY="<api_token>"
+  export GOOGLE_API_KEY="<api_key>"
 
 ## Run locally
 
