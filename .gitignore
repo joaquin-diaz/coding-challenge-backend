@@ -1,3 +1,7 @@
 .devcontainer.json
 .vscode
 *.pyc
+
+# Serverless directories
+.serverless
+node_modules
