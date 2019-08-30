@@ -1,8 +1,12 @@
 import json
+import os
+
 from api import FilmLocationsAPI
 
 def handler(event, context):
-  api = FilmLocationsAPI()
+  api_token = os.environ.get('SF_LOCATIONS_API_KEY', None)
+
+  api = FilmLocationsAPI(api_token)
   query, limit = get_qs(event)
 
   body = json.dumps(api.fetch_film_locations(query, limit))

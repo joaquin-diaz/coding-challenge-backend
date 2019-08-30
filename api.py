@@ -1,9 +1,14 @@
 import requests
+import os
 
 class FilmLocationsAPI(object):
   url = "https://data.sfgov.org/resource/wwmu-gmzc.json"
-  # TODO: API tokens should not be commited to the code
-  api_token = "IegozTH7xlN32jXMfFpqR8x1K"
+
+  def __init__(self, api_token):
+    if not api_token:
+      raise Exception("Please provide a valid api token")
+
+    self.api_token = api_token
 
   def _get_headers(self):
     return {

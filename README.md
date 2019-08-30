@@ -4,6 +4,10 @@
   source virtual_env/bin/activate
   pip install -r requirements.txt
 
+## Config
+
+  export SF_LOCATIONS_API_KEY="<api_token>"
+
 ## Run locally
 
   serverless invoke local -f films-location --data '{ "queryStringParameters": {"limit":"1"}}'
