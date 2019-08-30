@@ -5,3 +5,4 @@
 # Serverless directories
 .serverless
 node_modules
+virtual_env
