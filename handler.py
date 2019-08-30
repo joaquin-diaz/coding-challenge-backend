@@ -1,16 +1,28 @@
 import json
+import re
 import os
-import googlemaps
 
 from api import FilmLocationsAPI
+from geocode import append_coordinates_to_locations
 
-google_api_key = os.environ.get('GOOGLE_API_KEY', None)
+ALPHA_REGEX = r'^\w+$'
+INTEGER_REGEX = r'^[0-9]+$'
 
 def handler(event, context):
   api_token = os.environ.get('SF_LOCATIONS_API_KEY', None)
 
   api = FilmLocationsAPI(api_token)
   query, limit = get_qs(event)
+
+  try:
+    validate_qs(query, limit)
+  except Exception as e:
+    return {
+      "statusCode": 401,
+      "body": json.dumps({
+        "error": str(e)
+      })
+    }
 
   locations = api.fetch_film_locations(query, limit)
   append_coordinates_to_locations(locations)
@@ -28,19 +40,9 @@ def get_qs(event):
 
   return query_string.get('query', None), query_string.get('limit', None)
 
-def append_coordinates_to_locations(locations):
-  for location in locations:
-    address = locations[0]['locations']
-    coordinates = get_coordinates_from_address(address)
-    location['coordinates'] = coordinates
+def validate_qs(query, limit):
+  if query and not re.match(ALPHA_REGEX, query):
+    raise Exception("Please provide an alphanumeric value in the search parameter")
 
-  return locations
-
-def get_coordinates_from_address(address):
-  if not google_api_key:
-    raise Exception("Please provide a valid Google API token")
-
-  gmaps = googlemaps.Client(key=google_api_key)
-  geocode_response = gmaps.geocode(f"{address}, San Francisco, CA")
-
-  return geocode_response[0]['geometry']['location'] 
+  if limit and not re.match(INTEGER_REGEX, limit):
+    raise Exception("Please provide an integer value in the limit parameter")
