@@ -13,6 +13,10 @@
 
   serverless invoke local -f films-location --data '{ "queryStringParameters": {"limit":"1"}}'
 
+## Run tests
+
+  python -m unittest
+
 ## Manual Deploy
 
   sls deploy
