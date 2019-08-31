@@ -25,11 +25,13 @@ def handler(event, context):
     }
 
   locations = api.fetch_film_locations(query, limit)
-  append_coordinates_to_locations(locations)
+  # Some locations don't have an address
+  cleaned_locations = [location for location in locations if location.get('locations', None)]
+  append_coordinates_to_locations(cleaned_locations)
 
   return {
     "statusCode": 200,
-    "body": json.dumps(locations)
+    "body": json.dumps(cleaned_locations)
   }
 
 def get_qs(event):
