@@ -43,8 +43,8 @@ def get_qs(event):
   return query_string.get('query', None), query_string.get('limit', None)
 
 def validate_qs(query, limit):
-  if query and not re.match(ALPHA_REGEX, query):
-    raise Exception("Please provide an alphanumeric value in the search parameter")
-
   if limit and not re.match(INTEGER_REGEX, limit):
     raise Exception("Please provide an integer value in the limit parameter")
+
+  if limit and int(limit) > 10:
+    raise Exception("Please provide a limit between 0 and 10")
