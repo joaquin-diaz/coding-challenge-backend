@@ -12,13 +12,13 @@ def handler(event, context):
   api_token = os.environ.get('SF_LOCATIONS_API_KEY', None)
 
   api = FilmLocationsAPI(api_token)
-  query, limit = get_qs(event)
+  query, limit, include_coordinates = get_qs(event)
 
   try:
-    validate_qs(query, limit)
+    validate_qs(query, limit, include_coordinates)
   except Exception as e:
     return {
-      "statusCode": 401,
+      "statusCode": 400,
       "body": json.dumps({
         "error": str(e)
       })
@@ -27,7 +27,9 @@ def handler(event, context):
   locations = api.fetch_film_locations(query, limit)
   # Some locations don't have an address
   cleaned_locations = [location for location in locations if location.get('locations', None)]
-  append_coordinates_to_locations(cleaned_locations)
+
+  if include_coordinates == "true":
+    append_coordinates_to_locations(cleaned_locations)
 
   return {
     "statusCode": 200,
@@ -38,13 +40,13 @@ def get_qs(event):
   query_string = event.get('queryStringParameters', None)
 
   if not query_string:
-    return None, None
+    return None, None, None
 
-  return query_string.get('query', None), query_string.get('limit', None)
+  return query_string.get('query', None), query_string.get('limit', None), query_string.get('include_coordinates', None)
 
-def validate_qs(query, limit):
+def validate_qs(query, limit, include_coordinates):
   if limit and not re.match(INTEGER_REGEX, limit):
     raise Exception("Please provide an integer value in the limit parameter")
 
-  if limit and int(limit) > 10:
+  if limit and include_coordinates == "true" and int(limit) > 10:
     raise Exception("Please provide a limit between 0 and 10")
