@@ -46,7 +46,7 @@ deploy: &deploy
     - run:
         name: Install serverless and dependencies
         command: |
-          npm install -g serverless
+          yarn install 
           yarn install
     - save_cache:
         name: Save Yarn Package Cache
@@ -55,7 +55,7 @@ deploy: &deploy
           - node_modules/
     - run:
         name: Deploy
-        command: sls deploy
+        command: ./node_modules/serverless/bin/serverless deploy
 
 jobs:
   build:
@@ -77,3 +77,5 @@ workflows:
           <<: *only-master
       - deploy:
           <<: *only-master
+          requires:
+            - build

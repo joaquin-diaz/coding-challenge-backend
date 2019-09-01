@@ -2,7 +2,9 @@
   "name": "FilmsLocationService",
   "description": "",
   "version": "0.1.0",
-  "dependencies": {},
+  "dependencies": {
+    "serverless": "^1.51.0"
+  },
   "devDependencies": {
     "serverless-offline": "^5.10.1",
     "serverless-python-requirements": "^5.0.0"
