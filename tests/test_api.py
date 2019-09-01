@@ -37,7 +37,7 @@ class TestAPI(unittest.TestCase):
     mock_requests.get.assert_called
     mock_requests.get.assert_called_with(
       api.url, 
-      params={"$q": "", "$limit": 10}, 
+      params={"$q": "", "$limit": "10"}, 
       headers={'X-App-Token': 'some_token'}
     )
     mock_json.assert_called
