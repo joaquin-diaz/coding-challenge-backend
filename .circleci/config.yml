@@ -37,7 +37,7 @@ build: &build
 
 deploy: &deploy
   docker:
-    - image: circleci/node:latest
+    - image: nikolaik/python-nodejs:latest
   steps:
     - checkout
     - restore_cache:
