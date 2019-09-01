@@ -2,6 +2,8 @@ import os
 import googlemaps
 
 google_api_key = os.environ.get('GOOGLE_API_KEY', None)
+# Lambdas can keep a small in-memory cache if the time between requests is small enough
+# It's not 100% effective but it's worth trying
 in_memory_geocode_cache = {}
 
 def append_coordinates_to_locations(locations):
