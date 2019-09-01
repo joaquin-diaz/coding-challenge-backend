@@ -13,6 +13,7 @@ functions:
       - http: 
           path: /films
           method: get
+          cors: true
 
 plugins:
   - serverless-python-requirements
