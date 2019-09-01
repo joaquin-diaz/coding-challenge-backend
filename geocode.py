@@ -7,6 +7,12 @@ google_api_key = os.environ.get('GOOGLE_API_KEY', None)
 in_memory_geocode_cache = {}
 
 def append_coordinates_to_locations(locations):
+  '''
+  Appends coordinates to a list of locations by calling Google's Geocode API
+
+  Args:
+    locations (dict): list of film locations. See format at API 
+  '''
   for location in locations:
     address = location['locations']
     coordinates = None
@@ -24,6 +30,15 @@ def append_coordinates_to_locations(locations):
   return locations
 
 def _get_coordinates_from_address(address):
+  '''
+  Gets coordinates from Google's API
+
+  Args:
+    address (str): Address that we want the coordinates from
+
+  Returns:
+    coordinates: (dict): A dict with lat and lng values
+  '''
   if not google_api_key:
     raise Exception("Please provide a valid Google API token")
 

@@ -5,7 +5,6 @@ import os
 from api import FilmLocationsAPI
 from geocode import append_coordinates_to_locations
 
-ALPHA_REGEX = r'^\w+$'
 INTEGER_REGEX = r'^[0-9]+$'
 
 def handler(event, context):
@@ -37,6 +36,16 @@ def handler(event, context):
   }
 
 def get_qs(event):
+  '''
+  Extracts query string values from the event
+
+  Args:
+    event (dict): Lambda event; AWS Gateway API adds a 'queryStringParameters'
+                  key in the event with the query string 
+
+  Returns:
+    values (tuple): Tuple with query, limit, include_coordinates
+  '''
   query_string = event.get('queryStringParameters', None)
 
   if not query_string:
@@ -45,6 +54,11 @@ def get_qs(event):
   return query_string.get('query', None), query_string.get('limit', None), query_string.get('include_coordinates', None)
 
 def validate_limit(limit, include_coordinates):
+  '''
+  Checks that the limit is a valid integer and that the user doesn't fetch more than 
+  10 coordinates per call
+
+  '''
   if limit and not re.match(INTEGER_REGEX, limit):
     raise Exception("Please provide an integer value in the limit parameter")
 
