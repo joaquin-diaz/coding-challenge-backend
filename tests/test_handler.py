@@ -1,4 +1,6 @@
 import unittest
+import os
+
 from unittest.mock import patch, MagicMock
 
 from handler import handler, get_qs, validate_limit
@@ -8,6 +10,9 @@ def mock_append_coordinates(locations):
     location['coordinate'] = {'lat': 123, 'lng': 456}
 
 class TestHandler(unittest.TestCase):
+  def setUp(self):
+    os.environ["SF_LOCATIONS_API_KEY"] = "Test Key"
+
   def test_get_qs(self):
     mock_event = {
       'queryStringParameters': {
