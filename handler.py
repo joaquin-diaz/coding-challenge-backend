@@ -16,12 +16,13 @@ def handler(event, context):
   try:
     validate_limit(limit, include_coordinates)
   except Exception as e:
-    return {
+    response = {
       "statusCode": 400,
       "body": json.dumps({
         "error": str(e)
-      })
+      }),
     }
+    return response_with_cors(response)
 
   locations = api.fetch_film_locations(query, limit)
   # Some locations don't have an address
@@ -30,10 +31,23 @@ def handler(event, context):
   if include_coordinates == "true":
     append_coordinates_to_locations(cleaned_locations)
 
-  return {
+  response = {
     "statusCode": 200,
-    "body": json.dumps(cleaned_locations)
+    "body": json.dumps(cleaned_locations),
   }
+
+  return response_with_cors(response)
+
+def response_with_cors(response):
+  '''
+  Adds necessary headers to handle CORS
+  '''
+  response['headers'] = {
+    "Access-Control-Allow-Origin": '*', 
+    "Access-Control-Allow-Credentials": True, 
+  }
+
+  return response
 
 def get_qs(event):
   '''

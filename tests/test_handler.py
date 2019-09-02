@@ -79,7 +79,11 @@ class TestHandler(unittest.TestCase):
 
     self.assertDictEqual(response, {
       "statusCode": 200,
-      "body": '[{"locations": "Some Street 123", "coordinate": {"lat": 123, "lng": 456}}]'
+      "body": '[{"locations": "Some Street 123", "coordinate": {"lat": 123, "lng": 456}}]',
+      "headers": {
+        "Access-Control-Allow-Origin": '*', 
+        "Access-Control-Allow-Credentials": True, 
+      } 
     })
 
   @patch('handler.append_coordinates_to_locations', mock_append_coordinates)
@@ -104,7 +108,11 @@ class TestHandler(unittest.TestCase):
 
     self.assertDictEqual(response, {
       "statusCode": 200,
-      "body": '[{"locations": "Some Street 123", "coordinate": {"lat": 123, "lng": 456}}]'
+      "body": '[{"locations": "Some Street 123", "coordinate": {"lat": 123, "lng": 456}}]',
+      "headers": {
+        "Access-Control-Allow-Origin": '*', 
+        "Access-Control-Allow-Credentials": True, 
+      } 
     })
 
   @patch('handler.append_coordinates_to_locations')
@@ -128,5 +136,9 @@ class TestHandler(unittest.TestCase):
     mock_append.assert_not_called()
     self.assertDictEqual(response, {
       "statusCode": 200,
-      "body": '[{"locations": "Some Street 123"}]'
+      "body": '[{"locations": "Some Street 123"}]',
+      "headers": {
+        "Access-Control-Allow-Origin": '*', 
+        "Access-Control-Allow-Credentials": True, 
+      } 
     })
